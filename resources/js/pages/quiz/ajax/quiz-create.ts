@@ -59,4 +59,21 @@ const createQuestion = (question: string, quiz_id: string) => {
     );
 };
 
-export { createQuestion, updateAnswer, updateQuestion, updateRightAnswer };
+const createAnswer = (detail: string, question_id: string, quiz_id: string) => {
+    router.post(
+        route('answer.store'),
+        {
+            detail: detail,
+            question_id: question_id,
+        },
+        {
+            preserveScroll: true,
+            async: true,
+            onSuccess() {
+                router.get(route('quiz.create', quiz_id), {}, { async: true, preserveScroll: true });
+            },
+        },
+    );
+};
+
+export { createAnswer, createQuestion, updateAnswer, updateQuestion, updateRightAnswer };

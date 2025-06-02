@@ -25,6 +25,7 @@ export default function QuizCreate({ quiz }: QuizCreateProps) {
     const reload = () => {
         setQuiz(quiz);
     };
+
     const handleChange: FormEventHandler = (e) => {
         const target = e.target as HTMLInputElement;
         if (target.name == 'question') {
@@ -67,10 +68,10 @@ export default function QuizCreate({ quiz }: QuizCreateProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Quiz" />
-            <QuizDetail name={quiz.name} banner={quiz.banner} />
+            <QuizDetail quiz={quiz} />
             <main className="flex h-full w-full flex-col gap-4 p-4">
                 {dataQuiz.questions.map((item, idx) => {
-                    return <QuestionEditorField key={idx} question={item} onBlur={handleBlur} onChange={handleChange} />;
+                    return <QuestionEditorField key={idx} idx={idx} question={item} onBlur={handleBlur} onChange={handleChange} />;
                 })}
                 <AddQuestion quiz_id={quiz.id} />
             </main>

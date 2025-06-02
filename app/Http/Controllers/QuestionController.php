@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,16 @@ class QuestionController extends Controller
             "quiz_id" => "required",
         ]);
 
-        $quest = Question::create($validate);
+        Question::create($validate);
         return redirect()->route("quiz.create", ["id" => $validate["quiz_id"]]);
+    }
+
+    function destroy(Request $request)
+    {
+        $request->validate([
+            "id" => "required",
+        ]);
+
+        Question::destroy($request->id);
     }
 }

@@ -18,7 +18,7 @@ class QuizHistories extends Model
     protected static function booted()
     {
         static::creating(function (QuizHistories $quizH) {
-            $quizH->user_id = Auth::user()->id;
+            $quizH->user_id = Auth::user()->id ?? User::first()->id;
         });
     }
 
@@ -30,6 +30,16 @@ class QuizHistories extends Model
     function answer_histories()
     {
         return $this->hasMany(AnswerHistories::class, "quiz_history_id", "id");
+    }
+
+    function incorrect_answer()
+    {
+        return $this->hasMany(AnswerHistories::class, "quiz_history_id", "id");
+    }
+
+    function result()
+    {
+        return $this->hasMany(QuizResult::class, "quiz_history_id", "id");
     }
 
     function user()

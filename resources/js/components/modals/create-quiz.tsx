@@ -8,6 +8,7 @@ interface ModalsProps {
     isOpen: boolean;
     children: React.ReactNode;
     onClose: () => void;
+    className: string;
     title: string;
 }
 
@@ -20,15 +21,12 @@ interface CreateQuizForm {
     name: string;
 }
 
-export function Modals({ isOpen, onClose, children, title }: ModalsProps) {
+export function Modals({ isOpen, onClose, children, title, className }: ModalsProps) {
     return (
-        <div
-            onClick={onClose}
-            className={`fixed inset-0 top-0 left-0 z-[60] flex h-screen w-screen items-center justify-center transition-colors ${isOpen ? 'visible bg-black/70' : 'invisible'}`}
-        >
-            <div className="dark:bg-sidebar -mt-80 flex w-3/4 flex-col gap-6 rounded-xl bg-white p-4 md:w-1/2" onClick={(e) => e.stopPropagation()}>
+        <div onClick={onClose} className={`modals ${isOpen ? 'visible bg-black/70' : 'invisible'}`}>
+            <div className={'dark:bg-sidebar -mt-80 flex flex-col gap-6 rounded-xl bg-white p-4 ' + className} onClick={(e) => e.stopPropagation()}>
                 <div className="flex w-full flex-row justify-between">
-                    <h1>{title}</h1>
+                    <h1 className="text-xl font-black">{title}</h1>
                     <button onClick={onClose} className="flex scale-70 items-center justify-center self-end">
                         <X className="scale-150" />
                     </button>
@@ -42,20 +40,22 @@ interface AreYouSureProps {
     isOpen: boolean;
     onClose: () => void;
     id: string;
+    history?: boolean;
 }
 
-export function AreYouSure({ isOpen, onClose, id }: AreYouSureProps) {
+export function AreYouSure({ isOpen, onClose, id, history = true }: AreYouSureProps) {
     const [onProgress, setProgress] = useState(false);
 
     return (
-        <Modals isOpen={isOpen} onClose={onClose} title="Are You Sure?">
-            <div className="flex flex-row justify-center gap-4">
+        <Modals isOpen={isOpen} onClose={onClose} title="Are You Sure?" className="w-max md:w-1/4">
+            <div className="flex w-full flex-row items-center justify-between">
                 <button className="cursor-pointer rounded-lg bg-gray-400/50 px-4 py-2 font-bold text-white" onClick={onClose}>
                     Cancel
                 </button>
+                or
                 <Link
-                    href={route('quiz.destroy')}
-                    className="cursor-pointer rounded-lg bg-red-500 px-4 py-2 font-bold text-white disabled:bg-red-50/30"
+                    href={route(history ? 'quiz.destroy' : 'quiz.delete')}
+                    className="cursor-pointer rounded-lg bg-red-500 px-4 py-2 font-bold text-white disabled:bg-gray-400/50 dark:disabled:bg-red-50/30"
                     method="delete"
                     data={{ id: id }}
                     async={true}
@@ -91,7 +91,7 @@ export default function CreateQuizModals({ isOpen, onClose }: CreateQuizModals) 
     };
 
     return (
-        <Modals isOpen={isOpen} onClose={onClose} title="Create Quiz">
+        <Modals isOpen={isOpen} onClose={onClose} title="Create Quiz" className="create-quiz-modals">
             <form onSubmit={submit}>
                 <div className="grid gap-2">
                     <Input

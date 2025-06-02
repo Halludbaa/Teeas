@@ -16,7 +16,7 @@ export default function QuizRoom({ quizH }: QuizRoomProps) {
     const [selected, setSelected] = useState('');
     const [isCheck, setCheck] = useState<boolean>(true);
     const [isFinish, setFinish] = useState<boolean>(quizH.status == 'finished');
-    const [isLast, setLast] = useState<boolean>(false);
+    const [isLast, setLast] = useState<boolean>(questions.length == 1);
     const currentQuestion = questions[current];
 
     const onNext: NextQuestion = (e) => {

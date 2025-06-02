@@ -39,6 +39,9 @@ export default function Dashboard({ quiz }: DashboardProps) {
                         <QuizCard key={index} quiz={item} />
                     ))}
                 </section>
+                {quiz.length == 0 && (
+                    <h1 className="w-full p-2 text-center text-3xl font-bold text-black/50 dark:text-white/50">Come on! Create Your Own Quiz!</h1>
+                )}
             </AppLayout>
         </>
     );

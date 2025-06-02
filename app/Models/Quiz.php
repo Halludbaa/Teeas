@@ -21,7 +21,7 @@ class Quiz extends Model
     protected static function booted(): void
     {
         self::creating(static function (Quiz $quiz): void {
-            $quiz->creator_id = Auth::user()->id;
+            $quiz->creator_id = Auth::user()->id ?? User::first()->id;
         });
     }
 

@@ -9,7 +9,6 @@ class AnswerController extends Controller
 {
     function update(Request $request)
     {
-        // dd($request->all());
         $validate = $request->validate([
             "id" => "required",
             "detail" => "required",
@@ -19,5 +18,24 @@ class AnswerController extends Controller
 
 
         return redirect()->back();
+    }
+
+    function store(Request $request)
+    {
+        $validate = $request->validate([
+            "detail" => "required",
+            "question_id" => "required",
+        ]);
+
+        Answer::create($validate);
+    }
+
+    function destroy(Request $request)
+    {
+        $request->validate([
+            "id" => "required",
+        ]);
+
+        Answer::destroy($request->id);
     }
 }

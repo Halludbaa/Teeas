@@ -36,6 +36,14 @@ export interface AnswerHistory {
     status: string;
 }
 
+export interface Result {
+    correct: number;
+    incorrect: number;
+    quiz_history: QuizHistory;
+    user: User;
+    quiz: Quiz;
+}
+
 export interface QuizHistory {
     id: string;
     status: 'finished' | 'unfinished';
@@ -43,6 +51,7 @@ export interface QuizHistory {
     user_id: string;
     created_at: string;
     updated_at: string;
+    result: Result[];
     quiz: Quiz;
 }
 

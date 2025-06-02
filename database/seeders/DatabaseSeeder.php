@@ -36,30 +36,5 @@ class DatabaseSeeder extends Seeder
             "question" => "A or B",
             "quiz_id" => $quiz->id,
         ]);
-
-        $answer_1 = Answer::create([
-            "detail" => "A",
-            "question_id" => $quest->id,
-        ]);
-
-        $quest->right_answer_id = $answer_1->id;
-        $quest->save();
-
-        $answer_2 = Answer::create([
-            "detail" => "B",
-            "question_id" => $quest->id,
-        ]);
-
-        $quiz_h = QuizHistories::create([
-            "quizzes_id" => $quiz->id,
-            "user_id" => $user->id,
-        ]);
-
-        $answer_h1 = AnswerHistories::create([
-            "quiz_history_id" => $quiz_h->id,
-            "question_id" => $quest->id,
-            "answer_id" => $answer_2->id,
-            "status" => $quest->right_answer_id == $answer_2->id,
-        ]);
     }
 }

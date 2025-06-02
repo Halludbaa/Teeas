@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Events\QuizCreated;
+use App\Events\QuizFinished;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Quiz;
 use App\Models\Answer;
 use App\Models\AnswerHistories;
 use App\Models\Question;
 use App\Models\QuizHistories;
+use App\Models\QuizResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class QuizController extends Controller
 {
+
     function destroy(Request $request)
     {
         $validate = $request->validate([
@@ -24,6 +27,16 @@ class QuizController extends Controller
         QuizHistories::destroy($validate["id"]);
     }
 
+    function delete(Request $request)
+    {
+        $validate = $request->validate([
+            "id" => "required",
+        ]);
+
+        Quiz::destroy($validate["id"]);
+        return redirect()->route("home");
+    }
+
     function create(string $id)
     {
         $quiz = Quiz::with([
@@ -31,7 +44,9 @@ class QuizController extends Controller
                 "answers:id,detail,question_id",
             ]
         ])->where("id", "=", $id)->get(["id", "name", "creator_id", "status", "banner"])->toArray()[0] ?? [];
-
+        if ($quiz == []) {
+            return redirect()->back();
+        }
         return Inertia::render("quiz/quiz-create", compact("quiz"));
     }
 
@@ -42,8 +57,9 @@ class QuizController extends Controller
                 "questions:id,question,quiz_id,right_answer_id" => [
                     "answers:id,detail,question_id",
                     "answer_histories" => fn($q) => $q->where("quiz_history_id", "=", $id)->select("id", "question_id", "status")
-                ]
-            ]
+                ],
+            ],
+            "result",
         ])->where("id", "=", $id)->get([
             "id",
             "quizzes_id",
@@ -75,13 +91,16 @@ class QuizController extends Controller
             "is_last" => "required"
         ]);
 
+
+        AnswerHistories::create($request->only(["quiz_history_id", "answer_id", "question_id"]));
+
         if ($validate["is_last"] == "finished") {
             $quiz = QuizHistories::find($validate["quiz_history_id"]);
             $quiz->status = "finished";
             $quiz->save();
-        }
 
-        AnswerHistories::create($request->only(["quiz_history_id", "answer_id", "question_id"]));
+            event(new QuizFinished($quiz));
+        }
     }
 
 
@@ -104,12 +123,26 @@ class QuizController extends Controller
         return redirect()->route("quiz.play", $quizH->id);
     }
 
+    function update(Request $request)
+    {
+        $validate = $request->validate([
+            "name" => "nullable",
+            "id" => "required",
+        ]);
+
+        if ($validate["name"] != "") {
+            Quiz::find($request->id)->update($request->only("name"));
+        }
+    }
+
+
     function history()
     {
         $history = QuizHistories::with([
             "quiz:id,name,banner,creator_id" => [
                 "user:id,name"
-            ]
+            ],
+            "result"
         ])->where("user_id", "=", Auth::user()->id)
             ->get()
             ->toArray() ?? [];
