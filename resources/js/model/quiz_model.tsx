@@ -60,6 +60,7 @@ export interface ShowQuiz {
     name: string;
     banner: string;
     creator_id: string;
+    user: User;
     status: string;
     created_at: string;
     updated_at: string;

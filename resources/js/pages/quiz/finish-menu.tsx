@@ -22,8 +22,8 @@ export default function FinishMenu({ quizH }: FinishMenuProps) {
                     </span>
                 </div>
             </div>
-            <Link href={route('home')} className="mx-auto mt-4 block cursor-pointer rounded-xl bg-black p-4 font-bold text-white">
-                Go To Home
+            <Link href={route('quiz.explore')} className="mx-auto mt-4 block cursor-pointer rounded-xl bg-black p-4 font-bold text-white">
+                Explore More
             </Link>
         </main>
     );

@@ -1,4 +1,4 @@
-import {  LucideIcon, MessageCircleQuestionIcon, Settings, Settings2, Settings2Icon, SettingsIcon } from "lucide-react";
+import {  LucideIcon, MessageCircleQuestionIcon, Settings, Settings2, Settings2Icon, SettingsIcon, XIcon } from "lucide-react";
 import AppLogoIcon from "../app-logo-icon";
 import { ReactNode } from "react";
 import { Link } from "@inertiajs/react";
@@ -11,15 +11,31 @@ export interface Navigation {
 interface SidebarProps {
     children: ReactNode;
     navigation?: Navigation[];
+    isOpen: boolean
+    onClose: () => void;
 }
 
-export default function Sidebar({ children, navigation}: SidebarProps) {
+export default function Sidebar({ children, navigation, onClose, isOpen}: SidebarProps) {
   return (
-      <>
+      <>  
+          <aside className={"h-screen w-screen md:hidden flex flex-col fixed top-0 z-50 bg-white dark:bg-sidebar p-4 transition-all duration-500 " + (isOpen ? "left-0" : "-left-[200%]")}>
+            <div className=" flex flex-row gap-4 items-center p-2"><AppLogoIcon /> <h1 className="font-black text-2xl">Teez</h1> <XIcon className="ml-auto" onClick={onClose}/></div>
+            <ul className="flex flex-col">
+
+            {navigation?.map((items, idx) => (
+                  <li className="" key={idx}>
+                    <Link href={items.href} className="flex flex-row gap-2 p-4 rounded-lg scale-110 hover:bg-gray-200 dark:hover:bg-gray-600/50 dark:text-white text-black">
+                        <items.icon  /> {items.title}
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+
+          </aside>
           <aside className="fixed top-0 z-10 h-screen w-16 bg-white py-2 text-white shadow-xl dark:bg-sidebar hidden sm:block">
             <ul className="flex h-full w-full flex-col items-center justify-start gap-4">
                 <li className="">
-                    <Link href="/quiz" className="flex h-10 w-10 items-center justify-center rounded-full dark:hover:bg-gray-600/50 dark:bg-white hover:bg-gray-200 bg-black group p-2 scale-110">
+                    <Link href={route("dashboard")} className="">
                         <AppLogoIcon className="fill-white group-hover:fill-black dark:group-hover:fill-white dark:fill-black" />
                     </Link>
                 </li>

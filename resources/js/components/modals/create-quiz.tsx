@@ -48,7 +48,7 @@ export function AreYouSure({ isOpen, onClose, id, history = true }: AreYouSurePr
 
     return (
         <Modals isOpen={isOpen} onClose={onClose} title="Are You Sure?" className="w-max md:w-1/4">
-            <div className="flex w-full flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center justify-between gap-1">
                 <button className="cursor-pointer rounded-lg bg-gray-400/50 px-4 py-2 font-bold text-white" onClick={onClose}>
                     Cancel
                 </button>

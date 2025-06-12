@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->string("name", 150);
-            $table->string("banner", 200)->default("osaragi_sticker.jpg");
+            $table->string("banner", 200)->nullable();
             $table->foreignUuid('creator_id')->references("id")->on("users")->index();
             $table->enum("status", ["public", "private", "unlisted"])->default("public");
             $table->timestamps();

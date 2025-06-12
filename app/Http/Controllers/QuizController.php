@@ -18,7 +18,7 @@ use Inertia\Inertia;
 class QuizController extends Controller
 {
 
-    function destroy(Request $request)
+    function destroyHistory(Request $request)
     {
         $validate = $request->validate([
             "id" => "required",
@@ -34,7 +34,7 @@ class QuizController extends Controller
         ]);
 
         Quiz::destroy($validate["id"]);
-        return redirect()->route("home");
+        return redirect()->route("dashboard");
     }
 
     function create(string $id)
@@ -149,5 +149,12 @@ class QuizController extends Controller
 
 
         return Inertia::render("history", compact("history"));
+    }
+
+    function explore()
+    {
+        $media = Quiz::with("user:id,name")->get();
+
+        return Inertia::render("explore", compact("media"));
     }
 }

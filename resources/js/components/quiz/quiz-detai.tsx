@@ -1,6 +1,6 @@
 import { Quiz } from '@/model/quiz_model';
 import { router } from '@inertiajs/react';
-import { ImageIcon, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { AreYouSure } from '../modals/create-quiz';
 
@@ -40,13 +40,24 @@ export function QuizDetail({ quiz }: QuizDetailProps) {
         );
     };
 
+    const changeBanner: FormEventHandler = (e) => {
+        e.target.disabled = true;
+        // router.patch(
+        //     {
+        //     }
+        // );
+        setTimeout(() => {
+            console.info('upload');
+            e.target.disabled = false;
+        }, 15000);
+    };
     return (
         <>
             <AreYouSure history={false} isOpen={isOpen} onClose={() => setIsOpen(false)} id={quizID} />
             <section>
                 <div
-                    className={`bg-[url(/storage/uploads/${quiz.banner})] bg-background mb-2 min-h-50 w-full bg-contain`}
-                    style={{ backgroundImage: `url("/storage/uploads/${quiz.banner}")` }}
+                    className={`mb-2 min-h-50 w-full bg-slate-600/20 bg-contain`}
+                    // style={{ backgroundImage: `url("/storage/uploads/${quiz.banner}")` }}
                 >
                     {/*  */}
                 </div>
@@ -74,10 +85,6 @@ export function QuizDetail({ quiz }: QuizDetailProps) {
                         </p>
                     )}
 
-                    <label htmlFor="banner" className="textscale-120 flex cursor-pointer flex-row gap-1 text-lg">
-                        <ImageIcon /> Change
-                        <input type="file" className="hidden" name="banner" id="banner" />
-                    </label>
                     <button
                         className="cursor-pointer"
                         onClick={(e) => {

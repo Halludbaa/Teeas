@@ -16,7 +16,10 @@ export default function ShowQuiz({ quiz }: ShowQuizProps) {
                         method="post"
                         data={{ quizzes_id: quiz.id }}
                         replace={true}
-                        className="cursor-pointer rounded-lg bg-blue-500/80 px-4 py-2 text-xl font-bold text-white"
+                        onClick={(e) => {
+                            (e.target as HTMLInputElement).disabled = true;
+                        }}
+                        className="cursor-pointer rounded-lg bg-blue-500/80 px-4 py-2 text-xl font-bold text-white disabled:bg-gray-500/50"
                     >
                         Play
                     </Link>
