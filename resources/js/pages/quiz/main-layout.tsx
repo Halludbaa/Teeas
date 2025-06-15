@@ -10,7 +10,7 @@ interface AuthProps {
 }
 export default function MainLayout({ children }: MainLayoutProps) {
     const { auth } = usePage().props;
-    console.info(auth);
+
     return (
         <>
             <nav className="dark:bg-sidebar fixed top-0 flex h-18 w-screen items-center bg-white p-4 text-black shadow dark:text-white">
@@ -27,7 +27,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                         </a>
                     </li>
                     <li>
-                        <a href="#" className="rounded-lg px-2 py-1 transition-colors duration-150 hover:bg-slate-200    hover:text-black">
+                        <a href="#" className="rounded-lg px-2 py-1 transition-colors duration-150 hover:bg-slate-200 hover:text-black">
                             Build
                         </a>
                     </li>

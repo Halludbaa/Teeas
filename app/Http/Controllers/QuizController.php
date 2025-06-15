@@ -56,7 +56,7 @@ class QuizController extends Controller
             "quiz:id,name,creator_id,status" => [
                 "questions:id,question,quiz_id,right_answer_id" => [
                     "answers:id,detail,question_id",
-                    "answer_histories" => fn($q) => $q->where("quiz_history_id", "=", $id)->select("id", "question_id", "status")
+                    "answer_histories" => fn($q) => $q->where("quiz_history_id", "=", $id)->select("id", "question_id", "status", "answer_id")
                 ],
             ],
             "result",
